@@ -48,10 +48,18 @@ public class Apriori {
             }
         }
         int length = dataList_int.size();
+        //通过最小支持度的值来过滤
+//        for (HashSet<Integer> key:resultSetMap.keySet()) {
+//            double percent = (1.0*resultSetMap.get(key))/length;
+//            if (percent > min_support){
+//                lk.put(key,percent);
+//            }
+//        }
+        //通过最少出现次数来过滤
         for (HashSet<Integer> key:resultSetMap.keySet()) {
-            double percent = (1.0*resultSetMap.get(key))/length;
-            if (percent > min_support){
-                lk.put(key,percent);
+            double support = resultSetMap.get(key);
+            if (support > min_support){
+                lk.put(key,support);
             }
         }
         return lk;

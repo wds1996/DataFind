@@ -33,8 +33,8 @@ public class AprioriMain {
     }
 
     public static void main(String[] args) {
-        double min_support = 0.05;
-        String CSV_FILE_PATH = "src/main/resources/data.txt";
+        double min_support = 5;
+        String CSV_FILE_PATH = "src/main/resources/product_data.txt";
         List<String[]> dataList = new ArrayList<>();
         dataList = readCsvFile(CSV_FILE_PATH);
         //测试输出10条输出
@@ -88,13 +88,13 @@ public class AprioriMain {
 
         Map<HashSet<Integer>, Double> all_lk = apriori.getAll(dataList_int, min_support);
         //输出所有频繁项集
-        System.out.println("----------------------输出所有频繁项集----------------------");
-        for (HashSet<Integer> set:all_lk.keySet()) {
-            for (int i:set) {
-                System.out.print(index_2_string.get(i)+" ");
-            }
-            System.out.println("支持度："+all_lk.get(set));
-        }
+//        System.out.println("----------------------输出所有频繁项集----------------------");
+//        for (HashSet<Integer> set:all_lk.keySet()) {
+//            for (int i:set) {
+//                System.out.print(index_2_string.get(i)+" ");
+//            }
+//            System.out.println("支持度："+all_lk.get(set));
+//        }
 
         ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = apriori.rules_from_L(all_lk, 0.05);
 
