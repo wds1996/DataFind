@@ -34,8 +34,8 @@ public class AprioriMain {
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        double min_support = 10;
-        String CSV_FILE_PATH = "src/main/resources/product_data.txt";
+        double min_support = 20;
+        String CSV_FILE_PATH = "src/main/resources/product_data1.txt";
         List<String[]> dataList = new ArrayList<>();
         dataList = readCsvFile(CSV_FILE_PATH);
         //测试输出10条输出

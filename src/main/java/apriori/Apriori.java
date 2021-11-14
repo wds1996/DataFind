@@ -121,9 +121,9 @@ public class Apriori {
         HashSet<HashSet<Integer>> c1 = new HashSet<>();
         c1.addAll(build_c1(dataList_int));
         Map<HashSet<Integer>, Double> l1 = ck_2_lk(dataList_int, c1, min_support);
+        min_support = 6;
         Map<HashSet<Integer>, Double> LK = l1;
         Map<HashSet<Integer>, Double> LastK = l1;
-        min_support = 3;
         while (LK.size()>1){
             HashSet<HashSet<Integer>> ck_plus_1 = lk_2_ck_plus_1(LK);
             LK = ck_2_lk(dataList_int, ck_plus_1, min_support);

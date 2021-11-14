@@ -1,0 +1,106 @@
+Item: 237 Frequencies: 3032
+Item: 589 Frequencies: 1119
+Item: 301 Frequencies: 1204
+Item: 1146 Frequencies: 1426
+Item: 170 Frequencies: 3099
+Item: 60 Frequencies: 1489
+Item: 338 Frequencies: 1274
+Item: 110 Frequencies: 2794
+Item: 32 Frequencies: 15167
+Item: 65 Frequencies: 4472
+Item: 36 Frequencies: 2936
+Item: 147 Frequencies: 1779
+Item: 37 Frequencies: 1074
+Item: 38 Frequencies: 15596
+Item: 117 Frequencies: 1026
+Item: 270 Frequencies: 1734
+Item: 39 Frequencies: 50675
+Item: 438 Frequencies: 1863
+Item: 271 Frequencies: 2094
+Item: 592 Frequencies: 1227
+Item: 16010 Frequencies: 1316
+Item: 15832 Frequencies: 1143
+Item: 533 Frequencies: 1487
+Item: 824 Frequencies: 1210
+Item: 12925 Frequencies: 1467
+Item: 249 Frequencies: 1160
+Item: 310 Frequencies: 2594
+Item: 604 Frequencies: 1209
+Item: 41 Frequencies: 14945
+Item: 2238 Frequencies: 1715
+Item: 185 Frequencies: 1376
+Item: 13041 Frequencies: 1051
+Item: 123 Frequencies: 1302
+Item: 475 Frequencies: 2167
+Item: 78 Frequencies: 1060
+Item: 79 Frequencies: 1600
+Item: 413 Frequencies: 1880
+Item: 48 Frequencies: 42135
+Item: 49 Frequencies: 1120
+Item: 19 Frequencies: 1005
+Item: 16217 Frequencies: 1166
+Item: 9 Frequencies: 1372
+Item: 286 Frequencies: 1183
+Item: 255 Frequencies: 1474
+Item: 1004 Frequencies: 1102
+Item: 225 Frequencies: 3257
+Item: 1327 Frequencies: 1786
+Item: 548 Frequencies: 1137
+Item: 677 Frequencies: 1110
+Item: 161 Frequencies: 1010
+Item: 14098 Frequencies: 1291
+Item: 740 Frequencies: 1181
+Item: 101 Frequencies: 2237
+Item: 89 Frequencies: 3837
+Item: 1393 Frequencies: 1161
+Item: 201 Frequencies: 1133
+Item: 39 101 Frequencies: 1400
+Item: 38 170 Frequencies: 3031
+Item: 48 255 Frequencies: 1057
+Item: 48 225 Frequencies: 1736
+Item: 36 48 Frequencies: 1416
+Item: 38 110 Frequencies: 2725
+Item: 48 65 Frequencies: 2529
+Item: 39 89 Frequencies: 2749
+Item: 38 41 Frequencies: 3897
+Item: 39 237 Frequencies: 1929
+Item: 39 878 Frequencies: 344
+Item: 48 101 Frequencies: 1311
+Item: 38 48 Frequencies: 7944
+Item: 39 170 Frequencies: 2059
+Item: 37 38 Frequencies: 1046
+Item: 39 110 Frequencies: 1759
+Item: 32 38 Frequencies: 2833
+Item: 48 237 Frequencies: 1682
+Item: 32 39 Frequencies: 8455
+Item: 41 48 Frequencies: 9018
+Item: 39 147 Frequencies: 1137
+Item: 39 270 Frequencies: 1194
+Item: 39 438 Frequencies: 1260
+Item: 39 271 Frequencies: 1434
+Item: 39 65 Frequencies: 2787
+Item: 48 170 Frequencies: 1557
+Item: 38 286 Frequencies: 1116
+Item: 48 110 Frequencies: 1380
+Item: 39 310 Frequencies: 1852
+Item: 48 147 Frequencies: 1036
+Item: 48 271 Frequencies: 1090
+Item: 48 438 Frequencies: 1025
+Item: 32 41 Frequencies: 3196
+Item: 39 475 Frequencies: 1500
+Item: 32 48 Frequencies: 8034
+Item: 39 413 Frequencies: 1130
+Item: 39 2238 Frequencies: 1287
+Item: 36 38 Frequencies: 2790
+Item: 36 39 Frequencies: 2037
+Item: 39 41 Frequencies: 11414
+Item: 48 310 Frequencies: 1692
+Item: 39 255 Frequencies: 1057
+Item: 39 79 Frequencies: 1111
+Item: 39 225 Frequencies: 2351
+Item: 48 89 Frequencies: 2798
+Item: 39 48 Frequencies: 29142
+Item: 48 475 Frequencies: 1428
+Item: 39 1327 Frequencies: 1156
+Item: 48 413 Frequencies: 1135
+Item: 38 39 Frequencies: 10345
