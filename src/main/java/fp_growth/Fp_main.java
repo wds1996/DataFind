@@ -1,12 +1,14 @@
-package apriori;
-
+package fp_growth;
 import com.csvreader.CsvReader;
 import org.javatuples.Quintet;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class AprioriMain {
+public class Fp_main {
+
     /**
      * 读取 csv 文件
      */
@@ -34,20 +36,19 @@ public class AprioriMain {
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        double min_support = 3;
         String CSV_FILE_PATH = "src/main/resources/fp_test.txt";
         List<String[]> dataList = new ArrayList<>();
         dataList = readCsvFile(CSV_FILE_PATH);
         //测试输出10条输出
         System.out.println("----------------------输出读入文件五条数据----------------------");
         for (int i = 0; i < 5; i++) {
-            for (String iteam: dataList.get(i)) {
-                System.out.print(iteam+" ");
+            for (String iteam : dataList.get(i)) {
+                System.out.print(iteam + " ");
             }
             System.out.println();
         }
-        HashSet<String> dataSet= new HashSet<String>();
-        for (String[] slist:dataList) {
+        HashSet<String> dataSet = new HashSet<String>();
+        for (String[] slist : dataList) {
             dataSet.addAll(Arrays.asList(slist));
         }
         //字符串转对应编号，压缩计算
@@ -55,64 +56,64 @@ public class AprioriMain {
         //编号转回字符串
         Map<Integer, String> index_2_string = new HashMap<>();
         int index = 0;
-        for (String key:dataSet) {
-            string_2_index.put(key,index);
-            index_2_string.put(index,key);
+        for (String key : dataSet) {
+            string_2_index.put(key, index);
+            index_2_string.put(index, key);
             index++;
         }
         //创建计算用的整形数组，计算的时候用整数计算更节约空间和时间
         ArrayList<ArrayList<Integer>> dataList_int = new ArrayList<>();
-        for (String[] slist:dataList) {
+        for (String[] slist : dataList) {
             int length = slist.length;
             ArrayList<Integer> List_int = new ArrayList<>();
-            for (int i=0;i<length;i++) {
-                List_int.add(i,string_2_index.get(slist[i]));
+            for (int i = 0; i < length; i++) {
+                List_int.add(i, string_2_index.get(slist[i]));
             }
             dataList_int.add(List_int);
         }
         //测试输出10条输出
         System.out.println("----------------------输出转换为数字的五条数据----------------------");
         for (int i = 0; i < 5; i++) {
-            for (Integer iteam: dataList_int.get(i)) {
-                System.out.print(iteam+" ");
+            for (Integer iteam : dataList_int.get(i)) {
+                System.out.print(iteam + " ");
             }
             System.out.println();
         }
-        Apriori apriori = new Apriori();
 
-        //单步测试时的代码
-//        HashSet<HashSet<Integer>> c1 = new HashSet<>();
-//        c1.addAll(apriori.build_c1(dataList_int));
-//        System.out.println(c1);
-//        Map<HashSet<Integer>, Double> lk = apriori.ck_2_lk(dataList_int, c1, min_support);
-//        HashSet<HashSet<Integer>> ck_plus_1 = apriori.lk_2_ck_plus_1(lk);
 
-        Map<HashSet<Integer>, Double> all_lk = apriori.getAll(dataList_int, min_support);
-        //输出所有频繁项集
-        System.out.println("----------------------输出所有频繁项集----------------------");
-        int pinfan_index = 1;
-        while (true){
-            int p = 0;
-            System.out.println("----------------------频繁"+pinfan_index+"项集----------------------");
-            for (HashSet<Integer> set:all_lk.keySet()) {
-                if (set.size()==pinfan_index){
-                    p++;
-                    for (int i:set) {
-                        System.out.print(index_2_string.get(i)+" ");
-                    }
-                    System.out.println("支持度："+all_lk.get(set));
-                }
+        FpGrowth fptree = new FpGrowth(3);        //支持度阈值，可设置百分比（传入小数）
+        //初始化数据集，对事务进行计数
+        ArrayList<ArrayList<Integer>> transactions = fptree.createInitSet(dataList_int);
+        HashMap<HashSet<Integer>, Integer> result_map = fptree.fp_growth(transactions, null);
+        ArrayList <HashSet<Integer>> result_list= new ArrayList(result_map.keySet());
+        //实现集合排序
+        Collections.sort(result_list, new Comparator<HashSet<Integer>>() {
+            @Override
+            public int compare(HashSet<Integer> o1, HashSet<Integer> o2) {
+                return o1.size()- o2.size();
             }
-            pinfan_index++;
-            if (p==0){
-                break;
+        });
+
+        //频繁项集输出
+        System.out.println("----------------------输出频繁项集----------------------");
+        for (HashSet<Integer> list : result_list) {
+            ArrayList<Integer> key = new ArrayList(list);
+            int p=1;
+            int size = list.size();
+            for (Integer i : list) {
+                if (p==1)
+                    System.out.print("{");
+                if (p != size)
+                    System.out.print(index_2_string.get(i) + ",");
+                else
+                    System.out.print(index_2_string.get(i) + "} : ");
+                p++;
             }
+            System.out.println(result_map.get(list));
         }
 
-
         Make_rules rules = new Make_rules();
-        ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = rules.rules_from_freqItems(all_lk, 0.5);
-
+        ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = rules.rules_from_freqItems(result_map, 0.6);
         System.out.println("----------------------输出关联规则----------------------");
         for (Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double> iteam:result) {
             ArrayList<Integer> left = new ArrayList<>(iteam.getValue0());
@@ -124,7 +125,7 @@ public class AprioriMain {
             for (int i:right) {
                 System.out.print(index_2_string.get(i)+" ");
             }
-            System.out.println(" 支持度："+iteam.getValue2()+" 置信度："+iteam.getValue3()+" 提升度："+iteam.getValue4());
+            System.out.println(String.format(" 支持度：%.2f 置信度：%.2f 提升度：%.2f",iteam.getValue2(),iteam.getValue3(),iteam.getValue4()));
         }
         long end = System.currentTimeMillis();
         System.out.println("程序运行时间："+(end-start)+"ms");

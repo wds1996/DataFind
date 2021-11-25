@@ -1,8 +1,8 @@
-package apriori;
+import apriori.Apriori;
 
 import java.util.*;
 
-public class test {
+public class test1 {
     /**
      * 求一个集合全部的非空真子集
      * 思路：如果集合S（A,B,C,D）。其大小为4。拥有2的4次方个子集，即0-15，二进制表示为0000，0001。...，1111。
