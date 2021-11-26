@@ -97,7 +97,6 @@ public class Fp_main {
         //频繁项集输出
         System.out.println("----------------------输出频繁项集----------------------");
         for (HashSet<Integer> list : result_list) {
-            ArrayList<Integer> key = new ArrayList(list);
             int p=1;
             int size = list.size();
             for (Integer i : list) {
@@ -118,14 +117,30 @@ public class Fp_main {
         for (Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double> iteam:result) {
             ArrayList<Integer> left = new ArrayList<>(iteam.getValue0());
             ArrayList<Integer> right = new ArrayList<>(iteam.getValue1());
+            int p=1;
+            int left_size = left.size();
             for (int i:left) {
-                System.out.print(index_2_string.get(i)+" ");
+                if (p==1)
+                    System.out.print("{");
+                if (p != left_size)
+                    System.out.print(index_2_string.get(i) + ",");
+                else
+                    System.out.print(index_2_string.get(i) + "}");
+                p++;
             }
-            System.out.print("-->");
+            System.out.print(" --> ");
+            p=1;
+            int right_size = right.size();
             for (int i:right) {
-                System.out.print(index_2_string.get(i)+" ");
+                if (p==1)
+                    System.out.print("{");
+                if (p != right_size)
+                    System.out.print(index_2_string.get(i) + ",");
+                else
+                    System.out.print(index_2_string.get(i) + "}");
+                p++;
             }
-            System.out.println(String.format(" 支持度：%.2f 置信度：%.2f 提升度：%.2f",iteam.getValue2(),iteam.getValue3(),iteam.getValue4()));
+            System.out.println(" 支持度："+iteam.getValue2()+" 置信度："+iteam.getValue3()+" 提升度："+iteam.getValue4());
         }
         long end = System.currentTimeMillis();
         System.out.println("程序运行时间："+(end-start)+"ms");

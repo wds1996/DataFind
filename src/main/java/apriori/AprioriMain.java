@@ -87,42 +87,61 @@ public class AprioriMain {
 //        Map<HashSet<Integer>, Double> lk = apriori.ck_2_lk(dataList_int, c1, min_support);
 //        HashSet<HashSet<Integer>> ck_plus_1 = apriori.lk_2_ck_plus_1(lk);
 
-        Map<HashSet<Integer>, Double> all_lk = apriori.getAll(dataList_int, min_support);
+        Map<HashSet<Integer>, Double> freqItems_map = apriori.getAll(dataList_int, min_support);
+        ArrayList<HashSet<Integer>> freqItems = new ArrayList<>(freqItems_map.keySet());
+        //实现集合排序
+        Collections.sort(freqItems, new Comparator<HashSet<Integer>>() {
+            @Override
+            public int compare(HashSet<Integer> o1, HashSet<Integer> o2) {
+                return o1.size()- o2.size();
+            }
+        });
         //输出所有频繁项集
         System.out.println("----------------------输出所有频繁项集----------------------");
-        int pinfan_index = 1;
-        while (true){
-            int p = 0;
-            System.out.println("----------------------频繁"+pinfan_index+"项集----------------------");
-            for (HashSet<Integer> set:all_lk.keySet()) {
-                if (set.size()==pinfan_index){
-                    p++;
-                    for (int i:set) {
-                        System.out.print(index_2_string.get(i)+" ");
-                    }
-                    System.out.println("支持度："+all_lk.get(set));
-                }
+        for (HashSet<Integer> list : freqItems) {;
+            int p=1;
+            int size = list.size();
+            for (Integer i : list) {
+                if (p==1)
+                    System.out.print("{");
+                if (p != size)
+                    System.out.print(index_2_string.get(i) + ",");
+                else
+                    System.out.print(index_2_string.get(i) + "} : ");
+                p++;
             }
-            pinfan_index++;
-            if (p==0){
-                break;
-            }
+            System.out.println(freqItems_map.get(list));
         }
 
-
         Make_rules rules = new Make_rules();
-        ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = rules.rules_from_freqItems(all_lk, 0.5);
+        ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = rules.rules_from_freqItems(freqItems_map, 0.5);
 
         System.out.println("----------------------输出关联规则----------------------");
         for (Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double> iteam:result) {
             ArrayList<Integer> left = new ArrayList<>(iteam.getValue0());
             ArrayList<Integer> right = new ArrayList<>(iteam.getValue1());
+            int p=1;
+            int left_size = left.size();
             for (int i:left) {
-                System.out.print(index_2_string.get(i)+" ");
+                if (p==1)
+                    System.out.print("{");
+                if (p != left_size)
+                    System.out.print(index_2_string.get(i) + ",");
+                else
+                    System.out.print(index_2_string.get(i) + "}");
+                p++;
             }
-            System.out.print("-->");
+            System.out.print(" --> ");
+            p=1;
+            int right_size = right.size();
             for (int i:right) {
-                System.out.print(index_2_string.get(i)+" ");
+                if (p==1)
+                    System.out.print("{");
+                if (p != right_size)
+                    System.out.print(index_2_string.get(i) + ",");
+                else
+                    System.out.print(index_2_string.get(i) + "}");
+                p++;
             }
             System.out.println(" 支持度："+iteam.getValue2()+" 置信度："+iteam.getValue3()+" 提升度："+iteam.getValue4());
         }
