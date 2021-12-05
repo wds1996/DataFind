@@ -76,17 +76,15 @@ public class FpGrowth {
      * @return	:返回一个二元组，第一个参数是排序后的频繁一项集，第二个参数是不满足支持度的项集list
      * @function:主要用于生成头表 ， 顺带返回不满足支持度的项集list
      */
-    public  Pair<LinkedList<FP_TreeNode>,ArrayList<Integer>> buildHeaderTable(ArrayList<ArrayList<Integer>> transactions){
+    public LinkedList<FP_TreeNode> buildHeaderTable(ArrayList<ArrayList<Integer>> transactions){
         LinkedList<FP_TreeNode> headerTable = new LinkedList<FP_TreeNode>();
         HashMap<Integer, FP_TreeNode> map = new HashMap<Integer, FP_TreeNode>();
-        //用一个list将不满足支持的元素装起来
-        ArrayList<Integer> out_iteams = new ArrayList<Integer>();
         //使用HashMap保存项名称及结点，使用结点的原因为方便计数和排序
         for(ArrayList<Integer> items: transactions){
             for(Integer item: items){
                 if(map.containsKey(item))
                     map.get(item).inc(1);	//调用了FP_TreeNode的inc方法，使计数加1
-				else {
+                else {
                     FP_TreeNode node = new FP_TreeNode(item.toString(), 1);
                     map.put(item, node);
                 }
@@ -97,15 +95,10 @@ public class FpGrowth {
             FP_TreeNode node = map.get(name);
             if(node.getCount() >= supportNum) //只保存支持度大于支持度阈值（绝对值）的项
                 headerTable.add(node);
-            else
-                out_iteams.add(name);
         }
         //使用Collections的sort方法，需要对FP_TreeNode类实现一个排序类FP_TreeNodeSort
         Collections.sort(headerTable, new FP_TreeNodeSort());
-        //使用map将 头表 和 删除元素列表一起返回
-        Pair<LinkedList<FP_TreeNode>,ArrayList<Integer>> headerTable_out_iteams = new Pair<>(headerTable,out_iteams);
-
-        return headerTable_out_iteams;
+        return headerTable;
     }
 
     /*
@@ -115,15 +108,21 @@ public class FpGrowth {
      * @function:将所有事务按频繁项顺序排序并剔除不满足支持度的项集list后，返回排序后的新的事务
      */
     public ArrayList<ArrayList<Integer>> sortByFreqItem(ArrayList<ArrayList<Integer>> transactions,
-                                                        ArrayList<Integer> out_iteams) {
+                                                        LinkedList<FP_TreeNode> itemSortByFreq) {
         //保存排序后的所有事务
         ArrayList<ArrayList<Integer>> sortedTransactions = new ArrayList<ArrayList<Integer>>();
         for(ArrayList<Integer> transaction: transactions){
             ArrayList<Integer> sortedItem = new ArrayList<Integer>();	//保存排序后的一条事务
-            sortedItem = transaction;
-            sortedItem.removeAll(out_iteams);
-            //将剔除不满足条件的项集后的事务加到新的事务集中
-            sortedTransactions.add(sortedItem);
+            int itemNum = transaction.size();
+            for(FP_TreeNode node: itemSortByFreq){						//对排序后的频繁一项集遍历
+                if(transaction.contains(Integer.valueOf(node.getName()))){			//若当前事务中存在该频繁一项集，则保存
+                    sortedItem.add(Integer.valueOf(node.getName()));
+                    itemNum--;
+                }
+                if(itemNum == 0)									//用以计数避免无用的循环
+                    break;
+            }
+            sortedTransactions.add(sortedItem);						//每次循环处理一条事务
         }
 
         return sortedTransactions;
@@ -218,13 +217,9 @@ public class FpGrowth {
         //用于保存频繁项集freqItems
         HashMap<HashSet<Integer>,Integer> freqItems = new HashMap<>();
         //构建头标 同时 找出不满足条件的项集
-        Pair<LinkedList<FP_TreeNode>,ArrayList<Integer>> headerTable_out_iteams = buildHeaderTable(transactions);
-        //拿出元组中的头表link
-        LinkedList<FP_TreeNode> headerTable = headerTable_out_iteams.getValue0();
-        //拿出不满足条件项集的元素集合，用于下面剔除操作
-        ArrayList<Integer> out_iteams = headerTable_out_iteams.getValue1();
+        LinkedList<FP_TreeNode> headerTable = buildHeaderTable(transactions);
         //剔除不满足支持度的项，得到新的事务集
-        transactions = sortByFreqItem(transactions, out_iteams);
+        transactions = sortByFreqItem(transactions, headerTable);
         //对于当前项和事务，生成其对应的FP树和项头表
         FP_TreeNode root = buildFpGrowth(transactions, headerTable);
         //递归终止条件

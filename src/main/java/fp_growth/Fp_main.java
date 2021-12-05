@@ -1,9 +1,6 @@
 package fp_growth;
 import com.csvreader.CsvReader;
 import org.javatuples.Quintet;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -36,7 +33,7 @@ public class Fp_main {
 
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
-        String CSV_FILE_PATH = "src/main/resources/fp_test.txt";
+        String CSV_FILE_PATH = "src/main/resources/product_data.txt";
         List<String[]> dataList = new ArrayList<>();
         dataList = readCsvFile(CSV_FILE_PATH);
         //测试输出10条输出
@@ -82,7 +79,7 @@ public class Fp_main {
 
 
         FpGrowth fptree = new FpGrowth(3);        //支持度阈值，可设置百分比（传入小数）
-        //初始化数据集，对事务进行计数
+        //初始化数据集，对最小支持数格式判断
         ArrayList<ArrayList<Integer>> transactions = fptree.createInitSet(dataList_int);
         HashMap<HashSet<Integer>, Integer> result_map = fptree.fp_growth(transactions, null);
         ArrayList <HashSet<Integer>> result_list= new ArrayList(result_map.keySet());

@@ -1,12 +1,13 @@
-package apriori;
+package apriori_hash;
 
 import com.csvreader.CsvReader;
+import fp_growth.Make_rules;
 import org.javatuples.Quintet;
 
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class AprioriMain {
+public class Apriori_Hash_Main {
     /**
      * 读取 csv 文件
      */
@@ -78,17 +79,9 @@ public class AprioriMain {
             }
             System.out.println();
         }
-        Apriori apriori = new Apriori();
-
-        //单步测试时的代码
-//        HashSet<HashSet<Integer>> c1 = new HashSet<>();
-//        c1.addAll(apriori.build_c1(dataList_int));
-//        System.out.println(c1);
-//        Map<HashSet<Integer>, Double> lk = apriori.ck_2_lk(dataList_int, c1, min_support);
-//        HashSet<HashSet<Integer>> ck_plus_1 = apriori.lk_2_ck_plus_1(lk);
-
-        Map<HashSet<Integer>, Double> freqItems_map = apriori.getAll(dataList_int, min_support);
-        ArrayList<HashSet<Integer>> freqItems = new ArrayList<>(freqItems_map.keySet());
+        Apriori_hash apriori = new Apriori_hash();
+        Map<HashSet<Integer>, Integer> result_map = apriori.getAll(dataList_int, min_support);
+        ArrayList<HashSet<Integer>> freqItems = new ArrayList<>(result_map.keySet());
         //实现集合排序
         Collections.sort(freqItems, new Comparator<HashSet<Integer>>() {
             @Override
@@ -110,12 +103,10 @@ public class AprioriMain {
                     System.out.print(index_2_string.get(i) + "} : ");
                 p++;
             }
-            System.out.println(freqItems_map.get(list));
+            System.out.println(result_map.get(list));
         }
-
         Make_rules rules = new Make_rules();
-        ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = rules.rules_from_freqItems(freqItems_map, 0.5);
-
+        ArrayList<Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double>> result = rules.rules_from_freqItems(result_map, 0.6);
         System.out.println("----------------------输出关联规则----------------------");
         for (Quintet<HashSet<Integer>,HashSet<Integer>,Double,Double,Double> iteam:result) {
             ArrayList<Integer> left = new ArrayList<>(iteam.getValue0());
